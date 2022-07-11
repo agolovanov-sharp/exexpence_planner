@@ -1,4 +1,4 @@
-import 'package:expence_planner/transaction.dart';
+import 'package:expence_planner/widgets/user_transactions.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,18 +15,8 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeWidget extends StatelessWidget {
-  final List<Transaction> transactions = [
-    Transaction(
-        id: '1',
-        title: 'New spoon and plate',
-        amount: 22.3,
-        date: DateTime.now()),
-    Transaction(
-        id: '2',
-        title: 'Bought new smartphone',
-        amount: 2222.3,
-        date: DateTime.now()),
-  ];
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
 
   HomeWidget({Key? key}) : super(key: key);
 
@@ -38,22 +28,16 @@ class HomeWidget extends StatelessWidget {
         title: Text('Expence planner'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
             width: double.infinity,
             child: const Card(
-              child: const Text('Chart'),
+              child: Text('Chart'),
             ),
           ),
-          Column(
-            children: transactions
-                .map((trans) => Card(
-                      child: Text(trans.title),
-                    ))
-                .toList(),
-          )
+          UserTransactions()
         ],
       ),
     );
