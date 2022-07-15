@@ -31,39 +31,62 @@ class TransactionList extends StatelessWidget {
           : ListView.builder(
               itemBuilder: (ctx, index) {
                 return Card(
-                    child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 15),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(ctx).primaryColor, width: 2)),
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        '\$${transactions[index].amount.toStringAsFixed(2)}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Theme.of(ctx).primaryColor),
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          transactions[index].title,
-                          style: Theme.of(ctx).textTheme.titleSmall,
+                  margin: EdgeInsets.all(8),
+                  elevation: 5,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                        child: Padding(
+                      padding: EdgeInsets.all(4),
+                      child: FittedBox(
+                        child: Text(
+                          '\$${transactions[index].amount.toStringAsFixed(1)}',
                         ),
-                        Text(
-                          DateFormat.yMMMd().format(transactions[index].date),
-                          style:
-                              const TextStyle(fontSize: 16, color: Colors.grey),
-                        )
-                      ],
-                    )
-                  ],
-                ));
+                      ),
+                    )),
+                    title: Text(
+                      transactions[index].title,
+                      style: Theme.of(ctx).textTheme.titleSmall,
+                    ),
+                    subtitle: Text(
+                      DateFormat.yMMMd().format(transactions[index].date),
+                      style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+                  ),
+                );
+                // return Card(
+                //     child: Row(
+                //   children: [
+                //     Container(
+                //       margin: const EdgeInsets.symmetric(
+                //           vertical: 10, horizontal: 15),
+                //       decoration: BoxDecoration(
+                //           border: Border.all(
+                //               color: Theme.of(ctx).primaryColor, width: 2)),
+                //       padding: const EdgeInsets.all(10),
+                //       child: Text(
+                //         '\$${transactions[index].amount.toStringAsFixed(2)}',
+                //         style: TextStyle(
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: 20,
+                //             color: Theme.of(ctx).primaryColor),
+                //       ),
+                //     ),
+                //     Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Text(
+                //           transactions[index].title,
+                //           style: Theme.of(ctx).textTheme.titleSmall,
+                //         ),
+                //         Text(
+                //           DateFormat.yMMMd().format(transactions[index].date),
+                //           style:
+                //               const TextStyle(fontSize: 16, color: Colors.grey),
+                //         )
+                //       ],
+                //     )
+                //   ],
+                // ));
               },
               itemCount: transactions.length,
             ),

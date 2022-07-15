@@ -11,7 +11,8 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = ThemeData(fontFamily: 'Quicksand');
+    final ThemeData theme =
+        ThemeData(fontFamily: 'Quicksand', primarySwatch: Colors.purple);
 
     return MaterialApp(
       title: 'Personal Expences',
@@ -71,8 +72,8 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   List<Transaction> get _recentTransactions {
     return _userTransactions
-        .where(
-            (tx) => tx.date.isAfter(DateTime.now().subtract(const Duration(days: 7))))
+        .where((tx) =>
+            tx.date.isAfter(DateTime.now().subtract(const Duration(days: 7))))
         .toList();
   }
 
