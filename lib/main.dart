@@ -25,8 +25,10 @@ class MyApp extends StatelessWidget {
                   fontSize: 18)),
           appBarTheme: const AppBarTheme(
               titleTextStyle: TextStyle(fontFamily: 'OpenSans', fontSize: 20)),
-          colorScheme: theme.colorScheme
-              .copyWith(primary: Colors.purple, secondary: Colors.amber)),
+          colorScheme: theme.colorScheme.copyWith(
+              primary: Colors.purple,
+              secondary: Colors.amber,
+              error: Colors.red)),
       home: HomeWidget(),
     );
   }
@@ -40,22 +42,14 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  final List<Transaction> _userTransactions = [
-    // Transaction(
-    //     id: '1',
-    //     title: 'New spoon and plate',
-    //     amount: 22.3,
-    //     date: DateTime.now()),
-    // Transaction(
-    //     id: '2',
-    //     title: 'Bought new smartphone',
-    //     amount: 81.3,
-    //     date: DateTime.now()),
-  ];
+  final List<Transaction> _userTransactions = [];
 
-  void _addNewTransaction(String title, double amount) {
+  void _addNewTransaction(String title, double amount, DateTime selectedDate) {
     final newTx = Transaction(
-        id: title, title: title, amount: amount, date: DateTime.now());
+        id: DateTime.now().toString(),
+        title: title,
+        amount: amount,
+        date: selectedDate);
 
     setState(() {
       _userTransactions.add(newTx);
@@ -68,6 +62,12 @@ class _HomeWidgetState extends State<HomeWidget> {
         builder: (_) {
           return NewTransaction(onAddTx: _addNewTransaction);
         });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((element) => element.id == id);
+    });
   }
 
   List<Transaction> get _recentTransactions {
@@ -100,7 +100,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(_recentTransactions),
-            TransactionList(_userTransactions)
+            TransactionList(_userTransactions, _deleteTransaction)
           ],
         ),
       ),
