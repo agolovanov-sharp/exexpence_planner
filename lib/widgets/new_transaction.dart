@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -47,6 +50,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final ButtonStyle flatButtonStyle = TextButton.styleFrom(
       primary: Theme.of(context).primaryColor,
       minimumSize: Size(88, 36),
@@ -57,10 +61,16 @@ class _NewTransactionState extends State<NewTransaction> {
     );
 
     return Card(
+      elevation: 5,
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.only(
+            left: 8,
+            top: 8,
+            right: 8,
+            bottom: mediaQuery.viewInsets.bottom + 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               decoration: const InputDecoration(labelText: 'Title'),
@@ -80,13 +90,26 @@ class _NewTransactionState extends State<NewTransaction> {
                   Text(_selectedDate == null
                       ? 'No date chosen!'
                       : DateFormat.yMd().format(_selectedDate!)),
-                  TextButton(
-                    style: flatButtonStyle,
-                    onPressed: () {
-                      _showDatepicker();
-                    },
-                    child: Text('Choose Date'),
-                  )
+                  Platform.isIOS
+                      ? CupertinoButton(
+                          onPressed: () {
+                            _showDatepicker();
+                          },
+                          child: const Text(
+                            'Choose Date',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      : TextButton(
+                          style: flatButtonStyle,
+                          onPressed: () {
+                            _showDatepicker();
+                          },
+                          child: const Text(
+                            'Choose Date',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        )
                 ],
               ),
             ),
