@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:expence_planner/models/transaction.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -31,40 +33,75 @@ class TransactionList extends StatelessWidget {
                   )))
           : ListView.builder(
               itemBuilder: (ctx, index) {
-                return Card(
-                  margin: EdgeInsets.all(8),
-                  elevation: 5,
-                  child: ListTile(
-                    leading: CircleAvatar(
-                        child: Padding(
-                      padding: EdgeInsets.all(4),
-                      child: FittedBox(
-                        child: Text(
-                          '\$${transactions[index].amount.toStringAsFixed(1)}',
-                        ),
-                      ),
-                    )),
-                    title: Text(
-                      transactions[index].title,
-                      style: Theme.of(ctx).textTheme.titleSmall,
-                    ),
-                    subtitle: Text(
-                      DateFormat.yMMMd().format(transactions[index].date),
-                      style: const TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color: Theme.of(context).errorColor,
-                      ),
-                      onPressed: () =>
-                          deleteTransaction(transactions[index].id),
-                    ),
-                  ),
-                );
+                return TrxItem(
+                    key: ValueKey(transactions[index].id),
+                    transaction: transactions[index],
+                    deleteTransaction: deleteTransaction);
               },
               itemCount: transactions.length,
             ),
+    );
+  }
+}
+
+class TrxItem extends StatefulWidget {
+  const TrxItem({
+    Key? key,
+    required this.transaction,
+    required this.deleteTransaction,
+  }) : super(key: key);
+
+  final Transaction transaction;
+  final Function deleteTransaction;
+
+  @override
+  State<TrxItem> createState() => _TrxItemState();
+}
+
+class _TrxItemState extends State<TrxItem> {
+  Color? _bgColor;
+
+  @override
+  void initState() {
+    const avalColors = [Colors.red, Colors.black, Colors.blue, Colors.green];
+    final number = Random(DateTime.now().microsecondsSinceEpoch).nextInt(4);
+    _bgColor = avalColors[number];
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.all(8),
+      elevation: 5,
+      child: ListTile(
+        leading: CircleAvatar(
+            backgroundColor: _bgColor,
+            child: Padding(
+              padding: EdgeInsets.all(4),
+              child: FittedBox(
+                child: Text(
+                  '\$${widget.transaction.amount.toStringAsFixed(1)}',
+                ),
+              ),
+            )),
+        title: Text(
+          widget.transaction.title,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        subtitle: Text(
+          DateFormat.yMMMd().format(widget.transaction.date),
+          style: const TextStyle(fontSize: 16, color: Colors.grey),
+        ),
+        trailing: IconButton(
+          icon: Icon(
+            Icons.delete,
+            color: Theme.of(context).errorColor,
+          ),
+          onPressed: () => widget.deleteTransaction(widget.transaction.id),
+        ),
+      ),
     );
   }
 }

@@ -44,7 +44,7 @@ class HomeWidget extends StatefulWidget {
   State<HomeWidget> createState() => _HomeWidgetState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> {
+class _HomeWidgetState extends State<HomeWidget> with WidgetsBindingObserver {
   final List<Transaction> _userTransactions = [];
   bool _showChart = false;
 
@@ -80,6 +80,24 @@ class _HomeWidgetState extends State<HomeWidget> {
         .where((tx) =>
             tx.date.isAfter(DateTime.now().subtract(const Duration(days: 7))))
         .toList();
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   // This widget is the root of your application.
